@@ -86,6 +86,7 @@ namespace cardgenFunction
 
         public static Image GenerateHearthstone(HearthstoneCard request)
         {
+            // Setup our output card and all necessary fonts
             Image card = new Bitmap(400, 543);
             Graphics canvas = Graphics.FromImage(card);
             canvas.TextRenderingHint = TextRenderingHint.AntiAlias;
@@ -155,6 +156,18 @@ namespace cardgenFunction
 
                         }
                         canvas.DrawImage(backing, new Point(0, 0));
+                        if (request.rarity != HearthstoneCard.CardRarity.Free)
+                        {
+                            canvas.DrawImage(new Bitmap(Assets.Hearthstone.on_card_swirl_basic_minion,153,121), new Point(132, 348));
+                        }
+
+                        if (!IsEmpty(request.tribe))
+                        {
+                            canvas.DrawImage(Assets.Hearthstone.card_race,new Point(135,468));
+                            TextOutline outlinedtext = new TextOutline(request.tribe, 13, myFonts.Families[0], 150, 477);
+                            outlinedtext.Paint(canvas);
+                            canvas.DrawString(request.tribe, new Font(myFonts.Families[0], 13), Brushes.White, 150.5f, 477);
+                        }
                         // draw text
                         if (request.cost.Length > 1)
                         {
@@ -246,6 +259,44 @@ namespace cardgenFunction
                         path.AddCurve(titlecurve);
                         titletext.DrawTextOnPath(true, canvas, path);
                         titletext.DrawTextOnPath(false, canvas, path);
+
+                        if (request.rarity != HearthstoneCard.CardRarity.Free)
+                        {
+                            canvas.DrawImage(Assets.Hearthstone.minion_gem_brackets,new Point(192,305));
+                            Image gem = null;
+                            switch (request.rarity)
+                            {
+                                case HearthstoneCard.CardRarity.Common:
+                                    gem = Assets.Hearthstone.gem_common;
+                                    break;
+                                case HearthstoneCard.CardRarity.Rare:
+                                    gem = Assets.Hearthstone.gem_rare;
+                                    break;
+                                case HearthstoneCard.CardRarity.Epic:
+                                    gem = Assets.Hearthstone.gem_epic;
+                                    break;
+                                case HearthstoneCard.CardRarity.Legendary:
+                                    gem = Assets.Hearthstone.gem_legendary;
+                                    break;
+                                default:
+                                    throw new CardGeneratorException("Invalid rarity.");
+                            }
+                            canvas.DrawImage(gem, new Point(202, 308));
+                            if (request.rarity == HearthstoneCard.CardRarity.Legendary)
+                            {
+                                canvas.Save();
+                                Bitmap b = new Bitmap(400,573);
+                                canvas = Graphics.FromImage(b);
+                                canvas.FillRectangle(Brushes.White,new Rectangle(0,0,400,573));
+                                canvas.DrawImage(card,new Point(0,20));
+                                canvas.Save();
+                                card = b;
+                                canvas = Graphics.FromImage(card);
+                                //draw dragon
+                                Image dragon = new Bitmap(Assets.Hearthstone.card_minion_legendary_dragon_bracket,309,219);
+                                canvas.DrawImage(dragon,new Point(95,-5));
+                            }
+                        }
 
                         canvas.Save();
                         return card;

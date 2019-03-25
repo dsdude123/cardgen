@@ -51,6 +51,7 @@ namespace cardgenDesktopInterface
             arttobyte.Read(beforebase64, 0, (int)arttobyte.Length);
             card.artwork = Convert.ToBase64String(beforebase64);
             card.rarity = (HearthstoneCard.CardRarity) comboBox3.SelectedIndex;
+            card.tribe = textBox7.Text;
             CardGenerationRequest req = new CardGenerationRequest();
             req.hearthstoneCard = card;
             req.type = CardGenerationRequest.CardType.Hearthstone;
