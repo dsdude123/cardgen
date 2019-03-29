@@ -536,6 +536,10 @@ namespace cardgenFunction
 
                         }
                         canvas.DrawImage(backing, new Point(0, 0));
+                        if (request.rarity != HearthstoneCard.CardRarity.Free)
+                        {
+                            canvas.DrawImage(new Bitmap(Assets.Hearthstone.on_card_swirl_basic_spell, 172, 140), new Point(127, 348));
+                        }
                         // draw text
                         if (request.cost.Length > 1)
                         {
@@ -594,7 +598,29 @@ namespace cardgenFunction
                         path.AddCurve(titlecurve);
                         titletext.DrawTextOnPath(true, canvas, path);
                         titletext.DrawTextOnPath(false, canvas, path);
-
+                        if (request.rarity != HearthstoneCard.CardRarity.Free)
+                        {
+                            canvas.DrawImage(Assets.Hearthstone.spell_gem_brackets, new Point(169, 301));
+                            Image gem = null;
+                            switch (request.rarity)
+                            {
+                                case HearthstoneCard.CardRarity.Common:
+                                    gem = Assets.Hearthstone.gem_common;
+                                    break;
+                                case HearthstoneCard.CardRarity.Rare:
+                                    gem = Assets.Hearthstone.gem_rare;
+                                    break;
+                                case HearthstoneCard.CardRarity.Epic:
+                                    gem = Assets.Hearthstone.gem_epic;
+                                    break;
+                                case HearthstoneCard.CardRarity.Legendary:
+                                    gem = Assets.Hearthstone.gem_legendary;
+                                    break;
+                                default:
+                                    throw new CardGeneratorException("Invalid rarity.");
+                            }
+                            canvas.DrawImage(gem, new Point(188, 311));
+                        }
                         canvas.Save();
                         return card;
                     }
