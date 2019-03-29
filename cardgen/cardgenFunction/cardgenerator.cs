@@ -163,6 +163,30 @@ namespace cardgenFunction
 
                         if (!IsEmpty(request.tribe))
                         {
+                            
+                            if (request.tribe.Length < 10)
+                            {
+                                int spacing = 19 - request.tribe.Length;
+                                spacing /= 2;
+                                //if (request.tribe.Length < 3)
+                                //{
+                                //    request.tribe = "  " + request.tribe;
+                                //}
+                                //if (request.tribe.Length % 2 == 1)
+                                //{
+                                //    spacing++;
+                                //}
+                                for (int i = 0; i < spacing; i++)
+                                {
+                                    request.tribe = " " + request.tribe;
+                                }
+
+                            } else if (request.tribe.Length > 12)
+                            {
+                                request.tribe = request.tribe.Substring(0, 12);
+                            }
+
+
                             canvas.DrawImage(Assets.Hearthstone.card_race,new Point(135,468));
                             TextOutline outlinedtext = new TextOutline(request.tribe, 13, myFonts.Families[0], 150, 477);
                             outlinedtext.Paint(canvas);
