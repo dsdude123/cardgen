@@ -179,10 +179,10 @@ namespace cardgenFunction
                             }
 
 
-                            canvas.DrawImage(Assets.Hearthstone.card_race,new Point(135,468));
-                            TextOutline outlinedtext = new TextOutline(request.tribe, 13, myFonts.Families[0], 150, 477);
+                            canvas.DrawImage(new Bitmap(Assets.Hearthstone.card_race, 193, 37), new Point(115,468));
+                            TextOutline outlinedtext = new TextOutline(request.tribe, 13, myFonts.Families[0], 160, 477);
                             outlinedtext.Paint(canvas);
-                            canvas.DrawString(request.tribe, new Font(myFonts.Families[0], 13), Brushes.White, 150.5f, 477);
+                            canvas.DrawString(request.tribe, new Font(myFonts.Families[0], 13), Brushes.White, 160.5f, 477);
                         }
                         // draw text
                         if (request.cost.Length > 1)
@@ -540,6 +540,8 @@ namespace cardgenFunction
                         {
                             canvas.DrawImage(new Bitmap(Assets.Hearthstone.on_card_swirl_basic_spell, 172, 140), new Point(127, 348));
                         }
+
+
                         // draw text
                         if (request.cost.Length > 1)
                         {
