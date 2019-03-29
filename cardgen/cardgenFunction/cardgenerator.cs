@@ -82,7 +82,7 @@ namespace cardgenFunction
 
         }
 
-        // The following code is adapted from my work at the University of Washington Bothell
+        // The following function is adapted from my work at the University of Washington Bothell
 
         public static Image GenerateHearthstone(HearthstoneCard request)
         {
@@ -168,14 +168,6 @@ namespace cardgenFunction
                             {
                                 int spacing = 19 - request.tribe.Length;
                                 spacing /= 2;
-                                //if (request.tribe.Length < 3)
-                                //{
-                                //    request.tribe = "  " + request.tribe;
-                                //}
-                                //if (request.tribe.Length % 2 == 1)
-                                //{
-                                //    spacing++;
-                                //}
                                 for (int i = 0; i < spacing; i++)
                                 {
                                     request.tribe = " " + request.tribe;
@@ -373,6 +365,10 @@ namespace cardgenFunction
 
                         }
                         canvas.DrawImage(backing, new Point(0, 0));
+                        if (request.rarity != HearthstoneCard.CardRarity.Free)
+                        {
+                            canvas.DrawImage(new Bitmap(Assets.Hearthstone.on_card_swirl_basic_weapon, 172, 140), new Point(127, 348));
+                        }
                         // draw text
                         if (request.cost.Length > 1)
                         {
@@ -464,6 +460,30 @@ namespace cardgenFunction
                         path.AddCurve(titlecurve);
                         titletext.DrawTextOnPath(true, canvas, path);
                         titletext.DrawTextOnPath(false, canvas, path);
+
+                        if (request.rarity != HearthstoneCard.CardRarity.Free)
+                        {
+                            canvas.DrawImage(Assets.Hearthstone.weapon_gem_brackets, new Point(176, 305));
+                            Image gem = null;
+                            switch (request.rarity)
+                            {
+                                case HearthstoneCard.CardRarity.Common:
+                                    gem = Assets.Hearthstone.gem_common;
+                                    break;
+                                case HearthstoneCard.CardRarity.Rare:
+                                    gem = Assets.Hearthstone.gem_rare;
+                                    break;
+                                case HearthstoneCard.CardRarity.Epic:
+                                    gem = Assets.Hearthstone.gem_epic;
+                                    break;
+                                case HearthstoneCard.CardRarity.Legendary:
+                                    gem = Assets.Hearthstone.gem_legendary;
+                                    break;
+                                default:
+                                    throw new CardGeneratorException("Invalid rarity.");
+                            }
+                            canvas.DrawImage(gem, new Point(189, 306));
+                        }
 
                         canvas.Save();
                         return card;
