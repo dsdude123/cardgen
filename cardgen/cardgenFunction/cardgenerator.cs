@@ -540,7 +540,35 @@ namespace cardgenFunction
                         {
                             canvas.DrawImage(new Bitmap(Assets.Hearthstone.on_card_swirl_basic_spell, 172, 140), new Point(127, 348));
                         }
+                        if (request.rarity != HearthstoneCard.CardRarity.Free)
+                        {
+                            canvas.DrawImage(new Bitmap(Assets.Hearthstone.on_card_swirl_basic_minion, 153, 121), new Point(132, 348));
+                        }
 
+                        if (!IsEmpty(request.tribe))
+                        {
+
+                            if (request.tribe.Length < 10)
+                            {
+                                int spacing = 19 - request.tribe.Length;
+                                spacing /= 2;
+                                for (int i = 0; i < spacing; i++)
+                                {
+                                    request.tribe = " " + request.tribe;
+                                }
+
+                            }
+                            else if (request.tribe.Length > 12)
+                            {
+                                request.tribe = request.tribe.Substring(0, 12);
+                            }
+
+
+                            canvas.DrawImage(new Bitmap(Assets.Hearthstone.card_race, 193, 37), new Point(115, 468));
+                            TextOutline outlinedtext = new TextOutline(request.tribe, 13, myFonts.Families[0], 160, 477);
+                            outlinedtext.Paint(canvas);
+                            canvas.DrawString(request.tribe, new Font(myFonts.Families[0], 13), Brushes.White, 160.5f, 477);
+                        }
 
                         // draw text
                         if (request.cost.Length > 1)
